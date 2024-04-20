@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<h1>Login</h1>
+<form id="loginForm" onsubmit="">
+    <label for="emailLogInput">Email:</label><input type="email" id="emailLogInput"><br>
+    <label for="passLogInput">Password:</label><input type="password" id="passLogInput"><br>
+    <button type="submit">Login</button>
+</form>
+<script>
+    document.querySelector("#loginForm").addEventListener("submit", e => {
+        e.preventDefault()
+
+        const json = {
+            name: "",
+            email: document.querySelector("#emailLogInput").value,
+            password: document.querySelector("#passLogInput").value
+        }
+
+        fetch("/login/post", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(json)
+        }).then(res => {
+            if (!res.ok) {
+                throw new Error("Response not ok")
+            }
+            return res.json()
+        }).then(data => {
+            console.log("Success: ", data)
+            alert(data["message"])
+        }).catch(err => {
+            console.log("Error: ", err)
+        })
+    })
+</script>
+</body>
+</html>

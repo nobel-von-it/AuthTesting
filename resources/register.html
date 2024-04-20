@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Auth</title>
+</head>
+<body>
+<h1>Registration</h1>
+<form id="registerForm" onsubmit="">
+    <label for="textRegInput">Name:</label><input type="text" id="textRegInput"><br>
+    <label for="emailRegInput">Email:</label><input type="email" id="emailRegInput"><br>
+    <label for="passRegInput">Password:</label><input type="password" id="passRegInput"><br>
+    <button type="submit">Submit</button>
+</form>
+<script>
+    document.querySelector("#registerForm").addEventListener("submit", e => {
+        e.preventDefault()
+
+        const json = {
+            name: document.querySelector("#textRegInput").value,
+            email: document.querySelector("#emailRegInput").value,
+            password: document.querySelector("#passRegInput").value
+        }
+
+        fetch("/register/post", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(json)
+        }).then(res => {
+            if (!res.ok) {
+                throw new Error("Response not ok")
+            }
+            return res.json()
+        }).then(data => {
+            console.log("Success: ", data)
+            alert(data["message"])
+        }).catch(err => {
+            console.log("Error: ", err)
+        })
+    })
+</script>
+</body>
+</html>

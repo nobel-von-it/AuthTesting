@@ -1,6 +1,8 @@
 package main
 
 import (
+	"AuthGo/database"
+	"AuthGo/handlers"
 	"database/sql"
 	"fmt"
 	"log"
@@ -8,7 +10,7 @@ import (
 )
 
 func main() {
-	db, err := ConnectDB()
+	db, err := database.ConnectDB()
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -20,13 +22,13 @@ func main() {
 	}(db)
 	fmt.Println("db connected")
 
-	http.HandleFunc("/", MainInterface)
+	http.HandleFunc("/", handlers.MainInterface)
 
-	http.HandleFunc("/register", RegInterface)
-	http.HandleFunc("/register/post", RegUser)
+	http.HandleFunc("/register", handlers.RegInterface)
+	http.HandleFunc("/register/post", handlers.RegUser)
 
-	http.HandleFunc("/login", LogInterface)
-	http.HandleFunc("/login/post", LogUser)
+	http.HandleFunc("/login", handlers.LogInterface)
+	http.HandleFunc("/login/post", handlers.LogUser)
 
 	err = http.ListenAndServe(":9090", nil)
 	if err != nil {

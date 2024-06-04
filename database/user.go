@@ -1,4 +1,4 @@
-package main
+package database
 
 import (
 	"golang.org/x/crypto/bcrypt"
@@ -21,8 +21,7 @@ func (u User) HashPassword() (string, error) {
 	return string(hashPass), nil
 }
 func ComparePassword(hashpass, pass string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hashpass), []byte(pass))
-	if err != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(hashpass), []byte(pass)); err != nil {
 		return false
 	}
 	return true
